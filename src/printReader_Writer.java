@@ -48,21 +48,32 @@ public class printReader_Writer {
             Constructor of Scanner Class.
              */
             Scanner sc = new Scanner(file);
-            // This is a variable to control the iteration of the array. Counter should start from 0 as the array index starts from 0
+            // This count is a variable to control the iteration of the array. Counter should start from 0 as the array index starts from 0
             int count = 0;
 
-            while(sc.hasNext()) { // sc is the instance of the Scanner Class.
-                this.numbers[count] = sc.nextInt();
-                count++;
+            while(sc.hasNext()) { // sc is the instance of the Scanner Class. hasNext() method checks whether there is End-of-File
+                // in the file. It will perform the loop until it finds out the End-Of-File in the input file.
+                this.numbers[count] = sc.nextInt(); // sc.nextInt() will consider all the entry from file as Integer value. Without
+                // nextInt(), it takes input as string values. This method considers anything in between two spaces as Integer values.
+                count++; // It will count the number it can successfully read from the file.
             }
-            sc.close();
+            sc.close(); // This will close the file as well as close the scanner port of the program
         }
-        catch (IOException ex){
-            System.out.println(ex.getMessage());
+        catch (IOException ex){ // this section handles the File I/O exceptions if requires. The main program runs
+                                // inside the try block. If any problem appears in the try block, then that activates the
+                                // catch block and show the problem appeared. Based on the class appeared in the catch
+                                // section, that class shows the result.
+            System.out.println(ex.getMessage()); // This will print the error message in the terminal
         }
     }
 
     public void countNumbers(){
+        /*
+            This will compare the predefined numbers with the numbers in the array.  We have put some numbers in the file
+            In this following section, we will compare the numbers one by one. Once the comparison is successful, it will
+            increase the count of the numbers
+         */
+
         for (int i = 0; i < numbers.length; i++){
             if(numbers[i] == 10)
                 numberOfTens++;
@@ -76,10 +87,24 @@ public class printReader_Writer {
     }
 
     public void writeFile(){
+        /*
+        IN this section, we are going to write our counted variable one by one in the file. The File class open the file.
+        In the File default constructor, we have to pass the file which we want to open. In the Printwrite class default
+        constructor, we have to pass the file name which we have opened using File.
+         */
+
         try{
+            // The following line will open the file in the memory. We have to pass the file with the path to open it.
             File file = new File(getFileName());
+            // The PrintWrite class will create a writter for the file. This will write stuffs in the file.
             PrintWriter pw = null;
-            if (file.isFile() && file.exists())
+            if (file.isFile() && file.exists()) // These two methods check whether the given filename with path is
+                // a file or not. At the same time, it will check whether the file exists or not. If not, it will create
+                // If the file is present, it will open the file in Append mode.Append mode means, the file will keep its
+                //content and add new stuff after that.
+                // The following line will open the file in append mode. Inside PrintWriter default constructor, if you use
+                //fileOutputStream, it will allow the PrintWriter to open the file in Append mode. In addition to
+                // regular FileOUtputStream, we have to pass true as parameter.
                pw = new PrintWriter(new FileOutputStream(file, true));
             else
                 pw = new PrintWriter(file);
